@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js" integrity="sha512-QJsj3afWlCpnQ60XzzYE8Jb3IgHIK1BcGZox9rUSmRRq3Ocz9vQ1yR80eX2/b9jfx/UuT5zYWNdrM8Te/eCMhQ==" crossorigin="anonymous"></script> -->
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+    <style>
+        body{
+            background-color: #58155a;
+            color: #FFFFFF;
+            font-family: 'Carter One', cursive;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 24px;
+        }
+        h1{
+            text-transform: uppercase;
+        }
+    </style>
+    <title>Joe já postou hoje?</title>
+</head>
+<body>
+    <div class="conatiner" id="app">
+        <header>
+            Joe já postou no Ah Negão hoje?
+        </header>
+        <h1 v-if="status">Sim!</h1>
+        <h1 v-else>Não!</h1>
+        <footer>
+            <span v-if="status">
+                Os posts foram publicados por volta das <time>{{ horario() }}</time>
+            </span>
+            <span v-else>
+                Os últimos posts foram publicados no dia <time>{{ dataCompleta() }}</time>
+            </span>
+        </footer>
+    </div>
+    <script>
+        var app = new Vue({
+        el: '#app',
+        data: {
+            status: null,
+            last_date: ''
+        },
+        methods: {
+            horario(){
+                options = {
+                    // year: 'numeric', month: 'numeric', day: 'numeric',
+                    hour: 'numeric', minute: 'numeric',
+                    hour12: false,
+                };
+                return new Intl.DateTimeFormat('pt-BR', options).format(this.last_date);
+            },
+            dataCompleta(){
+                return new Intl.DateTimeFormat('pt-BR').format(this.last_date);
+            }
+        },
+        async mounted() {
+            let ultimo_post = await (await fetch('https://www.ahnegao.com.br/wp-json/wp/v2/posts?per_page=1')).json();
+            
+            let today = new Date();
+            this.last_date = new Date(ultimo_post[0].date);
+
+            if(today.getDate() == this.last_date.getDate()){
+                this.status = true;
+                document.title= "Joe já postou hoje? SIM!";
+            }else{
+                this.status = false;
+                document.title= "Joe já postou hoje? NÃO!"
+            }
+        },
+        })
+    </script>
+</body>
+</html>

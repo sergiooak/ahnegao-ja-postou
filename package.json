@@ -1,0 +1,11 @@
+{
+  "name": "ahnegao-ja-postou",
+  "version": "1.0.0",
+  "description": "Site simples para saber se o Joe já postou no blog hoje",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
