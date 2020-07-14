@@ -36,13 +36,16 @@
         </header>
         <h1 v-if="status">Sim!</h1>
         <h1 v-else>Não!</h1>
-        <footer>
+        <footer style="padding:30px;">
             <span v-if="status">
                 Os posts foram publicados por volta das <time>{{ horario() }}</time>
             </span>
             <span v-else>
                 Os últimos posts foram publicados no dia <time>{{ dataCompleta() }}</time>
             </span>
+            <footer style="font-family: sans-serif; font-size: 16px; margin-top: 30px;">
+                Agora temos um bot de twitter, siga <a style="color: #FFFFFF;" href="https://twitter.com/joejapostou">@joejapostou</a> e ative as notificações
+            </footer>
         </footer>
     </div>
     <script>
